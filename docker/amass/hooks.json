@@ -1,0 +1,30 @@
+[
+  {
+    "id": "amass-scan",
+    "execute-command": "/usr/bin/amass",
+    "command-working-directory": "/data/amass-results",
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "enum"
+      },
+      {
+        "source": "string",
+        "name": "-d"
+      },
+      {
+        "source": "payload",
+        "name": "domain"
+      },
+      {
+        "source": "string",
+        "name": "-o"
+      },
+      {
+        "source": "payload",
+        "name": "output_file"
+      }
+    ],
+    "response-message": "amass scan started"
+  }
+]

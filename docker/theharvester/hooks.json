@@ -1,0 +1,27 @@
+[
+  {
+    "id": "harvester-scan",
+    "execute-command": "/root/.local/bin/theHarvester",
+    "command-working-directory": "/data/harvester-results",
+    "pass-arguments-to-command": [
+      { "source": "string", "name": "-d" },
+      { "source": "payload", "name": "domain" },
+      { "source": "string", "name": "-b" },
+      { "source": "payload", "name": "source" },
+      { "source": "string", "name": "-f" },
+      {
+        "source": "payload",
+        "name": "output_file"
+      }
+    ],
+    "args": [
+      "-d",
+      "{{domain}}",
+      "-b",
+      "{{source}}",
+      "-f",
+      "/data/harvester-results/{{domain}}.html"
+    ],
+    "response-message": "theHarvester scan started"
+  }
+]
