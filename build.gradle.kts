@@ -17,7 +17,8 @@ val exposedVersion = "0.50.1"
 val kotlinxSerialization = "1.6.3"
 val postgresVersion = "42.7.3"
 val cliktVersion = "4.2.0"
-val slf4jVersion = "2.0.13"
+val loggingVersion = "7.0.3"
+val okHttpVersion = "3.2.0"
 
 dependencies {
     implementation("org.jetbrains.exposed:exposed-core:${exposedVersion}")
@@ -30,7 +31,10 @@ dependencies {
     implementation("org.postgresql:postgresql:${postgresVersion}")
 
     implementation("com.github.ajalt.clikt:clikt:${cliktVersion}")
-    implementation("org.slf4j:slf4j-simple:${slf4jVersion}")
+    implementation("io.github.oshai:kotlin-logging-jvm:$loggingVersion")
+
+    implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
+
     testImplementation(kotlin("test"))
 }
 
