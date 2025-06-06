@@ -54,7 +54,7 @@ class RetrieveOrchestratorTest {
         RetrieveOrchestrator().retrieveScan(outputType = "excel", scanId = "456")
 
         verify {
-            mockScan.exportToExcel("/Users/swichblade-/Developer/osint-scanner/docker/scan_results/scan_456.xlsx")
+            mockScan.exportToExcel("/data/scan-results/scan_456.xlsx")
         }//TODO fix absolute
     }
 

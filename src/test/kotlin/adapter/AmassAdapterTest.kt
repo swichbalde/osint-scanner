@@ -43,7 +43,7 @@ class AmassAdapterTest {
     fun `scan sends correct request`() = runBlocking {
         val domain = "example.com"
         val scanId = "123"
-        val expectedEndpoint = "http://localhost:9000/hooks/amass-scan"
+        val expectedEndpoint = "http://amass:9000/hooks/amass-scan"
         val expectedJson = """
             {
                 "domain": "$domain",

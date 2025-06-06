@@ -64,8 +64,6 @@ class ScanResultDtoTest {
             === Scan Result ===
             Scan ID: 12345
             Domain: example.com
-            File: scan_result.json
-            File size: 1024
             Results:
               - Type: URL
                   https://example.com
@@ -96,30 +94,26 @@ class ScanResultDtoTest {
             val headerRow = sheet.getRow(0)
             assertEquals("Scan ID", headerRow.getCell(0).stringCellValue)
             assertEquals("Domain", headerRow.getCell(1).stringCellValue)
-            assertEquals("File Name", headerRow.getCell(2).stringCellValue)
-            assertEquals("Type", headerRow.getCell(3).stringCellValue)
-            assertEquals("Artifact", headerRow.getCell(4).stringCellValue)
+            assertEquals("Type", headerRow.getCell(2).stringCellValue)
+            assertEquals("Artifact", headerRow.getCell(3).stringCellValue)
 
             val row1 = sheet.getRow(1)
             assertEquals("12345", row1.getCell(0).stringCellValue)
             assertEquals("example.com", row1.getCell(1).stringCellValue)
-            assertEquals("scan_result.json", row1.getCell(2).stringCellValue)
-            assertEquals("URL", row1.getCell(3).stringCellValue)
-            assertEquals("https://example.com", row1.getCell(4).stringCellValue)
+            assertEquals("URL", row1.getCell(2).stringCellValue)
+            assertEquals("https://example.com", row1.getCell(3).stringCellValue)
 
             val row2 = sheet.getRow(2)
             assertEquals("12345", row2.getCell(0).stringCellValue)
             assertEquals("example.com", row2.getCell(1).stringCellValue)
-            assertEquals("scan_result.json", row2.getCell(2).stringCellValue)
-            assertEquals("URL", row2.getCell(3).stringCellValue)
-            assertEquals("https://test.com", row2.getCell(4).stringCellValue)
+            assertEquals("URL", row2.getCell(2).stringCellValue)
+            assertEquals("https://test.com", row2.getCell(3).stringCellValue)
 
             val row3 = sheet.getRow(3)
             assertEquals("12345", row3.getCell(0).stringCellValue)
             assertEquals("example.com", row3.getCell(1).stringCellValue)
-            assertEquals("scan_result.json", row3.getCell(2).stringCellValue)
-            assertEquals("EMAIL", row3.getCell(3).stringCellValue)
-            assertEquals("user@example.com", row3.getCell(4).stringCellValue)
+            assertEquals("EMAIL", row3.getCell(2).stringCellValue)
+            assertEquals("user@example.com", row3.getCell(3).stringCellValue)
 
             workbook.close()
         }

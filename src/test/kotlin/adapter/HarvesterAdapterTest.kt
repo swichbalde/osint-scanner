@@ -35,7 +35,7 @@ class HarvesterAdapterTest {
             }
         """.trimIndent()
         val expectedBody = expectedBodyString.toRequestBody("application/json".toMediaType())
-        val expectedEndpoint = "http://localhost:9001/hooks/harvester-scan"
+        val expectedEndpoint = "http://theharvester:9001/hooks/harvester-scan"
 
         coEvery { adapter.sendRequest(any(), any()) } just Runs
 
