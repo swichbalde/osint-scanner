@@ -18,7 +18,7 @@ class RetrieveOrchestrator {
             }
 
             "excel" -> {
-                val filePath = "/Users/swichblade-/Developer/osint-scanner/docker/scan_results/scan_${scanId}.xlsx"
+                val filePath = "/data/scan-results/scan_${scanId}.xlsx"
                 retrievedScan.exportToExcel(filePath)
                 logger.info { "Exported scan $scanId to Excel file: $filePath" }
             }

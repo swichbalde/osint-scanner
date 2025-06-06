@@ -13,7 +13,7 @@ private val logger = KotlinLogging.logger {}
 
 class HarvesterAdapter : ScanAdapter {
 
-    private val webhookEndpoint = "http://localhost:9001/hooks/harvester-scan"
+    private val webhookEndpoint = "http://theharvester:9001/hooks/harvester-scan"
 
     override suspend fun scan(domain: String, scanId: String) {
         logger.info { "Preparing Harvester scan request for domain: $domain, scanId: $scanId" }

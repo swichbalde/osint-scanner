@@ -33,8 +33,6 @@ data class ScanResultDto(
         appendLine("=== Scan Result ===")
         appendLine("Scan ID: $scanId")
         appendLine("Domain: $domain")
-        appendLine("File: $fileName")
-        appendLine("File size: $fileContentSize")
         appendLine("Results:")
         scanResult.forEach { result ->
             appendLine("  - Type: ${result.type}")
@@ -50,7 +48,7 @@ data class ScanResultDto(
         val sheet = workbook.createSheet("ScanResults")
 
         // Header
-        val header = listOf("Scan ID", "Domain", "File Name", "Type", "Artifact")
+        val header = listOf("Scan ID", "Domain", "Type", "Artifact")
         val headerRow: Row = sheet.createRow(0)
         header.forEachIndexed { idx, name ->
             headerRow.createCell(idx).setCellValue(name)
@@ -62,9 +60,8 @@ data class ScanResultDto(
                 val row = sheet.createRow(rowIdx++)
                 row.createCell(0).setCellValue(scanId)
                 row.createCell(1).setCellValue(domain)
-                row.createCell(2).setCellValue(fileName)
-                row.createCell(3).setCellValue(result.type)
-                row.createCell(4).setCellValue(artifact)
+                row.createCell(2).setCellValue(result.type)
+                row.createCell(3).setCellValue(artifact)
             }
         }
 

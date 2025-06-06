@@ -1,6 +1,6 @@
 package orchestrator
 
-import factory.ToolFactory
+import factory.toolFactories
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -11,16 +11,14 @@ import java.util.UUID
 
 private val logger = KotlinLogging.logger {}
 
-class ScanOrchestrator(
-    val toolFactories: List<ToolFactory> = emptyList(),
-) {
+class ScanOrchestrator {
 
     fun runScan(domain: String) {
         val scanId = UUID.randomUUID().toString()
         logger.info { "Starting scan $scanId for $domain" }
 
         runBlocking {
-            val outputDir = File("/Users/swichblade-/Developer/osint-scanner/docker/scan_results")
+            val outputDir = File("/data/scan-results")
             if (outputDir.mkdirs()) {
                 logger.info { "Created output directory: ${outputDir.absolutePath}" }
             } else {

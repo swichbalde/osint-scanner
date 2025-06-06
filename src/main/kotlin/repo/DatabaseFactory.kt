@@ -9,7 +9,6 @@ import org.jetbrains.exposed.sql.json.jsonb
 import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.Properties
 
 @Serializable
 data class ScanResult(
@@ -41,15 +40,11 @@ object RawFileTable : Table("raw_file") {
 
 object DatabaseFactory {
     fun init() {
-        val fis = javaClass.getResourceAsStream("/application.properties")
-            ?: throw Exception("Application properties not found")
-        val props = Properties().apply {
-            load(fis)
-        }
-        val url = props.getProperty("db.url")
-        val user = props.getProperty("db.user")
-        val password = props.getProperty("db.password")
-        val driver = props.getProperty("db.driver")
+        val url = System.getenv("DB_URL")
+        val user = System.getenv("DB_USER")
+        val password = System.getenv("DB_PASSWORD")
+        val driver = System.getenv("DB_DRIVER")
+
 
         Database.connect(url, driver = driver, user = user, password = password)
         transaction {

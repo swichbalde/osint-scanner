@@ -11,7 +11,7 @@ private val logger = KotlinLogging.logger {}
 
 class AmassAdapter : ScanAdapter {
 
-    private val webhookEndpoint = "http://localhost:9000/hooks/amass-scan"
+    private val webhookEndpoint = "http://amass:9000/hooks/amass-scan"
 
     override suspend fun scan(domain: String, scanId: String) {
         logger.info { "Preparing Amass scan request for domain: $domain, scanId: $scanId" }

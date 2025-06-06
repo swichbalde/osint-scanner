@@ -57,7 +57,7 @@ suspend fun Path.listenTo(targetDomain: String) {
     logger.info { "Finished watching directory: $path. Expected number of tools ($finishedTools) completed." }
 }
 
-public suspend fun handleNewFile(fullPath: Path): List<ScanResult>? {
+suspend fun handleNewFile(fullPath: Path): List<ScanResult>? {
     val fileName = fullPath.fileName.toString()
     logger.info { "Determining file type for $fileName" }
     return when {
