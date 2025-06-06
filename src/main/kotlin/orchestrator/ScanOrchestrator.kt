@@ -1,32 +1,49 @@
 package orchestrator
 
-import adapter.AmassAdapter
-import adapter.HarvesterAdapter
-import adapter.ToolFactory
-import repo.ScanResult
-import java.util.*
+import factory.ToolFactory
+import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import listener.listenTo
+import java.io.File
+import java.util.UUID
 
-class ScanOrchestrator {
-    private val toolFactories = listOf(
-        ToolFactory("harvester", HarvesterAdapter()),
-        ToolFactory("amass", AmassAdapter())
-    )
+private val logger = KotlinLogging.logger {}
 
-    fun runScan(domain: String, outputType: String) {
+class ScanOrchestrator(
+    val toolFactories: List<ToolFactory> = emptyList(),
+) {
+
+    fun runScan(domain: String) {
         val scanId = UUID.randomUUID().toString()
-//        log("Starting scan $scanId for $domain")
+        logger.info { "Starting scan $scanId for $domain" }
 
-        // Run tools concurrently
-        val results = toolFactories.map { factory ->
-            kotlin.concurrent.thread {
-                try {
-                    factory.adapter.scan(domain, scanId)
-                } catch (e: Exception) {
-//                    log("Tool ${factory.name} failed: ${e.message}", scanId)
-                    emptyList<ScanResult>()
+        runBlocking {
+            val outputDir = File("/Users/swichblade-/Developer/osint-scanner/docker/scan_results")
+            if (outputDir.mkdirs()) {
+                logger.info { "Created output directory: ${outputDir.absolutePath}" }
+            } else {
+                logger.info { "Output directory already exists: ${outputDir.absolutePath}" }
+            }
+            val outputPath = outputDir.toPath()
+
+            logger.info { "Launching directory watcher on $outputPath" }
+            launch(Dispatchers.IO) {
+                outputPath.listenTo(domain)
+            }
+
+            val results = toolFactories.map { factory ->
+                launch {
+                    logger.info { "Starting tool: ${factory.name} for domain: $domain, scanId: $scanId" }
+                    try {
+                        factory.adapter.scan(domain, scanId)
+                    } catch (e: Exception) {
+                        logger.error(e) { "Error running tool ${factory.name}: ${e.message}" }
+                    }
                 }
             }
-        }.map { it.join(); it }
-        println(results)
+            results.forEach { it.join() }
+        }
     }
 }

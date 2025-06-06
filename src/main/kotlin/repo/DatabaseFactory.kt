@@ -5,32 +5,44 @@ import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.json.jsonb
 import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
+import java.util.Properties
 
 @Serializable
 data class ScanResult(
-    val countryInfo: String,
-    val whoisJson: String
+    val type: String,
+    val value: List<String>,
 )
+
 val format = Json { prettyPrint = true }
 
-object Scans : Table("scans") {
-    val id = varchar("id", 36)
+object ScanTable : Table("scan") {
+    val id = integer("id").autoIncrement()
     val domain = varchar("domain", 255)
-    val status = varchar("status", 20)//TODO ?
+    val scanId = varchar("scan_id", 36).index()
     val result = jsonb<ScanResult>("result", Json.Default)
+    val rawFileId = integer("raw_file_id").references(RawFileTable.id)
+
+    val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
+    override val primaryKey = PrimaryKey(id)
+}
+
+object RawFileTable : Table("raw_file") {
+    val id = integer("id").autoIncrement()
+    val fileName = varchar("file_name", 255)
+    val data = binary("data")
+
     val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
     override val primaryKey = PrimaryKey(id)
 }
 
 object DatabaseFactory {
     fun init() {
-        val fis = javaClass.getResourceAsStream("/application.properties") ?: throw Exception("Application properties not found1")
+        val fis = javaClass.getResourceAsStream("/application.properties")
+            ?: throw Exception("Application properties not found")
         val props = Properties().apply {
             load(fis)
         }
@@ -41,7 +53,7 @@ object DatabaseFactory {
 
         Database.connect(url, driver = driver, user = user, password = password)
         transaction {
-            SchemaUtils.create(Scans)
+            SchemaUtils.create(ScanTable, RawFileTable)
         }
     }
 }
