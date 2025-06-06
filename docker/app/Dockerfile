@@ -16,4 +16,4 @@ WORKDIR /app
 
 COPY --from=build /app/build/libs/*-all.jar app-all.jar
 
-ENTRYPOINT ["java", "-jar", "app-all.jar", "scan", "exampl.com"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
