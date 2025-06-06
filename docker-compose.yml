@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: osint_postgres
+    environment:
+      POSTGRES_DB: osintdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    container_name: osint_kotlin_app
+    depends_on:
+      - postgres
+      - theharvester
+      - amass
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/osintdb
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_DRIVER: org.postgresql.Driver
+    volumes:
+      - ./scan_results:/data/scan-results
+
+  theharvester:
+    build:
+      context: docker/theharvester
+    container_name: theharvester_runner
+    ports:
+      - "9001:9001"
+    volumes:
+      - ./scan_results:/data/scan-results
+
+  amass:
+    build:
+      context: docker/amass
+    container_name: amass_runner
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./scan_results:/data/scan-results
+
+volumes:
+  pgdata:

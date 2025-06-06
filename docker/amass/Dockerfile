@@ -3,7 +3,7 @@ FROM kalilinux/kali-rolling
 # Install amass and other dependencies
 RUN apt-get update && \
     apt-get install -y amass webhook curl wget unzip && \
-    mkdir -p /data/amass-results
+    mkdir -p /data/scan-results
 
 WORKDIR /data
 

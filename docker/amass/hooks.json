@@ -2,7 +2,7 @@
   {
     "id": "amass-scan",
     "execute-command": "/usr/bin/amass",
-    "command-working-directory": "/data/amass-results",
+    "command-working-directory": "/data/scan-results",
     "pass-arguments-to-command": [
       {
         "source": "string",

@@ -47,7 +47,7 @@ RUN pipx install --python python3.11 git+https://github.com/laramies/theHarveste
 # Ensure pipx path
 RUN pipx ensurepath
 
-RUN mkdir -p /data/harvester-results
+RUN mkdir -p /data/scan-results
 
 WORKDIR /data
 

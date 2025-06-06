@@ -2,7 +2,7 @@
   {
     "id": "harvester-scan",
     "execute-command": "/root/.local/bin/theHarvester",
-    "command-working-directory": "/data/harvester-results",
+    "command-working-directory": "/data/scan-results",
     "pass-arguments-to-command": [
       { "source": "string", "name": "-d" },
       { "source": "payload", "name": "domain" },
