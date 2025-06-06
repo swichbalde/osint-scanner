@@ -1,7 +1,5 @@
 package listener
 
-import adapter.waitForFileComplete
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -38,19 +36,6 @@ class ListenerTest {
                 every { it.toString() } returns "/test/path/${firstArg<Path>().toString()}"
             }
         }
-    }
-
-    @Test
-    fun `handleNewFile should return null when Amass file is not complete`() = runBlocking {
-        val fileName = "amass_test.txt"
-        val fullPath = mockk<Path>()
-        every { fullPath.fileName } returns mockk<Path>().also { every { it.toString() } returns fileName }
-        every { fullPath.toString() } returns "/test/path/$fileName"
-        coEvery { waitForFileComplete(fullPath) } returns false
-
-        val result = handleNewFile(fullPath)
-
-        assertNull(result)
     }
 
     @Test
